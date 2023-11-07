@@ -1,4 +1,3 @@
-/*
 package com.todowebservice.todorestfullwebservices.repository;
 
 import java.util.List;
@@ -10,4 +9,4 @@ import com.todowebservice.todorestfullwebservices.model.Todo;
 public interface TodoRepository extends JpaRepository<Todo, Integer> 
 {
 	public List<Todo> findTodosByUsername(String username);
-}*/
+}
