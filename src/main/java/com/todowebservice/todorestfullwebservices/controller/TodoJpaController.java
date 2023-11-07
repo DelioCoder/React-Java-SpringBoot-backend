@@ -13,19 +13,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.todowebservice.todorestfullwebservices.model.Todo;
+import com.todowebservice.todorestfullwebservices.repository.TodoRepository;
 import com.todowebservice.todorestfullwebservices.service.TodoService;
 
-//@RestController
-public class TodoController {
+@RestController
+public class TodoJpaController
+{
 
 	@Autowired
-	private TodoService service;
+	private TodoRepository todoRepository;
 	
 	@GetMapping("/users/{username}/list-todo")
 	public List<Todo> getTodos(@PathVariable String username)
 	{
 		
-		return this.service.findByUsername(username);
+		return this.todoRepository.findTodosByUsername(username);
 		
 		
 	}
@@ -34,7 +36,7 @@ public class TodoController {
 	public Todo getTodoById(@PathVariable String username, @PathVariable int id)
 	{
 		
-		return this.service.findById(id);
+		return this.todoRepository.findById(id).get();
 		
 	}
 	
@@ -42,7 +44,7 @@ public class TodoController {
 	public ResponseEntity<Void> deleteTodo(@PathVariable String username, @PathVariable int id)
 	{
 		
-		this.service.deleteTodoById(id);
+		this.todoRepository.deleteById(id);
 		
 		return ResponseEntity.noContent().build();
 		
@@ -52,7 +54,7 @@ public class TodoController {
 	public Todo updateTodo(@PathVariable String username, @PathVariable int id, @RequestBody Todo todo)
 	{
 		
-		this.service.updateTodo(todo);
+		this.todoRepository.save(todo);
 		
 		return todo;
 		
@@ -62,9 +64,10 @@ public class TodoController {
 	public Todo createTodo(@PathVariable String username, @RequestBody Todo todo)
 	{
 		
-		Todo createdTodo = this.service.addTodoinList(username, todo.getDescription(), todo.getTargetDate(), todo.isDone());
+		todo.setUsername(username);
+		todo.setId(null);
 		
-		return createdTodo;
+		return this.todoRepository.save(todo);
 	
 	}
 	
