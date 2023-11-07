@@ -1,0 +1,1 @@
+INSERT INTO todo(id, description, done, target_date, username) VALUES (10001, 'Learn AWS', false,  CURRENT_DATE(), 'souldeath');
